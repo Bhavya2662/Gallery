@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
@@ -38,7 +39,17 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     private void loadImages(){
-
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        images=ImagesGallery.listOfImages(this);
+        galleryAdapter = new GalleryAdapter(this, images, new GalleryAdapter.PhotoListener() {
+            @Override
+            public void onPhotoClick(String path) {
+                Toast.makeText(MainActivity.this, ""+path, Toast.LENGTH_SHORT).show();
+            }
+        });
+        recyclerView.setAdapter(galleryAdapter);
+        gallery_number.setText("Photos ("+images.size()+")");
     }
 
     @Override
